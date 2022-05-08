@@ -14,10 +14,11 @@ import glob
 # Constants
 OUTPUT_PATH = '/Users/toranosuke/Desktop/screen_shot_path'
 TARGET_IMGS_PATH = './target_imgs_ds'
-VIDEO_DURATION_MIN = 5
+VIDEO_DURATION_MIN = 60
 # スクショ撮るのに約0.4s, 保存に0.8~0.9s,　全体で約1.5sかかると思った方が良い
 INTERVAL_SEC = 5  # INTERVAL_SEC should be largeer than 1.5s.
 THSH_DIFF_HASH_VAL = 5
+THSH_TARGET_HASH_VAL = 3
 
 # Queue
 img_q = queue.Queue()
@@ -69,7 +70,7 @@ def exclude_similar_imgs():
                 continue
 
             # 保存対象の画像でない時
-            if abs(imagehash.colorhash(Image.open(img_path)) - target_img_hash) > THSH_DIFF_HASH_VAL:
+            if abs(imagehash.colorhash(Image.open(img_path)) - target_img_hash) > THSH_TARGET_HASH_VAL:
                 print(f'[not target img]{img_path}')
                 os.remove(img_path)
                 continue
