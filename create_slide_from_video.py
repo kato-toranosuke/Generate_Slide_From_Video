@@ -42,7 +42,8 @@ def take_screenshot():
 
         end_t = time.perf_counter()
         print(f'SHOT! {index}')
-        time.sleep(INTERVAL_SEC - (end_t - start_t))
+        wait_time = INTERVAL_SEC - (end_t - start_t)
+        time.sleep(wait_time if wait_time > 0 else 0.01)
 
     # 番兵を挿入
     img_q.put('last')
@@ -114,6 +115,7 @@ def calc_target_imgs_hash(path):
     return img_hash
 
 def main():
+    os.makedirs(OUTPUT_PATH, exist_ok=True)
     future_list = []
     with futures.ThreadPoolExecutor() as executor:
         future_take_ss = executor.submit(take_screenshot)
